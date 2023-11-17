@@ -14,27 +14,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Get files
+      uses: actions/checkout@v3
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
 
-    - name: Restore dependencies
+    - name: Restore
       run: dotnet restore
 
     - name: Build
       run: dotnet build --no-restore -o /home/runner/work/output
-
-    - name: Get current date
-      id: date
-      run: echo "date=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
       
-    - name: Zip dll
-      run: zip /home/runner/work/output/${{ github.event.repository.name }}-${{ steps.date.outputs.date }}.zip /home/runner/work/output/*.dll
+    - name: Zip
+      run: zip /home/runner/work/output/${{ github.event.repository.name }}.zip /home/runner/work/output/*.dll
 
-    - name: Create release
+    - name: Release
       uses: "marvinpinto/action-automatic-releases@latest"
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
