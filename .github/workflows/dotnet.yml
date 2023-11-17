@@ -25,14 +25,14 @@ jobs:
       run: dotnet restore
 
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build --no-restore -o /home/runner/work/binaries
 
     - name: Get current date
       id: date
       run: echo "date=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
       
     - name: Zip dll
-      run: zip ${{ github.event.repository.name }}-${{ steps.date.outputs.date }}.zip /home/runner/work/**/*.dll
+      run: zip ${{ github.event.repository.name }}-${{ steps.date.outputs.date }}.zip /home/runner/work/binaries/*.dll
 
     - name: Create release
       uses: marvinpinto/action-automatic-releases@latest
@@ -40,4 +40,4 @@ jobs:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         prerelease: false
         files: |
-          *.zip
+          /home/runner/work/binaries/*.zip
