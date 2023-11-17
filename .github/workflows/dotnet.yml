@@ -34,7 +34,8 @@ jobs:
     - name: Zip dll
       run: zip ${{ github.event.repository.name }}-${{ steps.date.outputs.date }}.zip /home/runner/work/*/*/bin/Debug/net7.0/*.dll
 
-    - uses: "marvinpinto/action-automatic-releases@latest"
+    - name: Create release
+      - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: false
